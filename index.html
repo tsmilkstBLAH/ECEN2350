@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Conversion Homework</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .question-box {
+            background: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .concept-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .input-section {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        input[type="text"] {
+            font-size: 1.2em;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            width: 250px;
+            margin: 10px;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+        
+        .video-section {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .video-info {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .continue-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 15px;
+        }
+        
+        .continue-btn:hover {
+            background: #1e7e34;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-box {
+            background: #ffc107;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+        }
+        
+        .progress-section {
+            margin: 25px 0;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            background: #28a745;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 15px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .code-section {
+            background: #e8f4f8;
+            border: 2px solid #17a2b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .completion-section {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .grade-passing {
+            background: #28a745 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Number Conversion Homework Part 1</h1>
+        <p class="subtitle">You get at least 3 tries on each question. If you miss one, watch the video solution before trying again.</p>
+        
+        <div class="question-box">
+            <div class="concept-header">
+                <h3 id="conceptName">Ready...</h3>
+                <p id="sequenceProgress">You get at least 3 tries per question type.</p>
+                <div><strong id="totalProgress">Question 1 of 7 Total</strong></div>
+            </div>
+            
+            <div class="question" id="question">Loading your first question...</div>
+            
+            <div class="input-section">
+                <input type="text" id="answer" placeholder="Your answer..." autocomplete="off">
+                <br>
+                <button class="submit-btn" onclick="checkAnswer()">Submit Answer</button>
+            </div>
+        </div>
+        
+        <div class="feedback hidden" id="feedback"></div>
+        
+        <div class="video-section hidden" id="videoTutorial">
+            <h3>Video Solution</h3>
+            <p>Watch this tutorial before trying again:</p>
+            <div class="video-info">
+                <div id="videoContent"></div>
+            </div>
+            <button class="continue-btn" onclick="continueAfterVideo()">I'm Ready to Try Again</button>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-number" id="attempts">0</span>
+                <span class="stat-label">Total Attempts</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="completed">0</span>
+                <span class="stat-label">Questions Done</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="remaining">7</span>
+                <span class="stat-label">Questions Left</span>
+            </div>
+            <div class="stat-box" id="gradeCard">
+                <span class="stat-number" id="grade">0%</span>
+                <span class="stat-label">Progress</span>
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">0 of 7 questions completed</p>
+        </div>
+        
+        <div class="code-section">
+            <h3>Your Current Progress Code:</h3>
+            <div class="code-display" id="currentProgressCode">Not started yet</div>
+            <p><strong>For Canvas:</strong> Copy this code anytime and submit it to Canvas as your answer when you are done.</p>
+            <div id="progressSummary" style="background: white; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                0/7 questions completed (0%)
+            </div>
+            <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                <strong>Grading Formula:</strong> 70% Effort (problems attempted) + 30% Accuracy (problems correct)
+            </div>
+        </div>
+        
+        <div class="completion-section hidden" id="completionMessage">
+            <h2>Assignment Complete!</h2>
+            <p>Excellent! You've successfully completed all 7 questions!</p>
+            <div id="finalStats"></div>
+            <button class="submit-btn" onclick="generateCompletionCode()">Generate Completion Code for Canvas</button>
+            <div class="code-section hidden" id="completionCode"></div>
+        </div>
+    </div>
+
+    <script>
+        const TOTAL_QUESTIONS_REQUIRED = 7;
+        
+        const PROBLEM_SEQUENCES = [
+            {
+                conceptName: "Binary to decimal with no fraction (Base-2 to base-10). 3 tries.",
+                problems: [
+                    { 
+                        question: "What is (base-2) 01011 in base-10? Just write the number. No spaces or comments. Passcode to video if you miss question: e0r%7n!q", 
+                        answer: "11",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/nl16qc7Q_tpHFJ3hwKdlqdT1GVNCHgcwk7-tMo6BTCYsd9vvNxiOU3cVqFQ9ORQ.6xKemrp-O1ZDpMO2?startTime=1756257159000",
+                        tutorialText: "0x2^4+1x2^3+0x2^2+1x2^1+1x2^0=0+8+0+2+1=11"
+                    },
+                    { 
+                        question: "What is (base-2) 01110 in base-10? Just write the number. No spaces or comments. Passcode to video if you miss question: e0r%7n!q", 
+                        answer: "14",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/nl16qc7Q_tpHFJ3hwKdlqdT1GVNCHgcwk7-tMo6BTCYsdvvvNxiOU3cVqFQ9ORQ.6xKemrp-O1ZDpMO2?startTime=1756257391000",
+                        tutorialText: "0x2^4+1x2^3+1x2^2+1x2^1+0x2^0=0+8+4+2+0=14"
+                    },
+                    { 
+                        question: "What is (base-2) 10001 in base-10? Just write the number. No spaces or comments. To video: Passcode: DgLa$0Wi", 
+                        answer: "17",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/nVVruAq-KmOlAFnJh3cJNvDteneXIJ_mYi09W0Ogjz3k7n-XHsG6jJxYXywNDmU-.Aqre_BJtVBnek2bN?startTime=1756258746000",
+                        tutorialText: "1x2^4+0x2^3+0x2^2+0x2^1+1x2^0=16+0+0+0+1=17"
+                    }
+                ]
+            },
+            {
+                conceptName: "Binary to decimal with fractions (Base-2 to base-10). 3 tries.",
+                problems: [
+                    { 
+                        question: "What is base-2 010.11 in base-10? Just write the number. No spaces or comments. Passcode to video if you miss question: DgLa$0Wi", 
+                        answer: "2.75",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756258838000",
+                        tutorialText: "0x2^2+1x2^1+0x2^0+1x2^-1+1x2^-2=0+2+0+0.5+0.25=2.75"
+                    },
+                    { 
+                        question: "What is base-2 011.10 in base-10? Just write the number. No spaces or comments. Passcode to video if you miss question: DgLa$0Wi", 
+                        answer: "3.5",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756258897000",
+                        tutorialText: "0x2^2+1x2^1+1x2^0+1x2^-1+0x2^-2=0+2+1+0.5+0=3.5"
+                    },
+                    { 
+                        question: "What is base-2 10.001 in base-10? Just write the number. No spaces or comments. Passcode: DgLa$0Wi", 
+                        answer: "2.125",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756258958000",
+                        tutorialText: "1x2^1+0x2^0+0x2^-1+0x2^-2+1x2^-3=2+0+0+0+0.125=2.125"
+                    }
+                ]
+            },
+            {
+                conceptName: "Base-10 to binary. No fractions. 3 tries.",
+                problems: [
+                    { 
+                        question: "What is 24 in binary? Answer in 6-bits. Passcode: DgLa$0Wi", 
+                        answer: "011000",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756259233000",
+                        tutorialText: "24 = 16+8 = 011000 in 6-bit binary"
+                    },
+                    { 
+                        question: "What is 11 in binary? Answer in 6-bits. Passcode: DgLa$0Wi", 
+                        answer: "001011",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756259657000",
+                        tutorialText: "11 = 8+2+1 = 001011 in 6-bit binary"
+                    },
+                    { 
+                        question: "What is 46 in binary? Answer in 6-bits. Passcode: DgLa$0Wi", 
+                        answer: "101110",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756259761000",
+                        tutorialText: "46 = 32+8+4+2 = 101110 in 6-bit binary"
+                    }
+                ]
+            },
+            {
+                conceptName: "Base-10 to binary. Fractions. 3 tries.",
+                problems: [
+                    { 
+                        question: "What is 4.75 in binary? Answer in Q4.2. Passcode: DgLa$0Wi", 
+                        answer: "0100.11",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756260454000",
+                        tutorialText: "4.75 = 4 + 0.75 = 0100 + .11 = 0100.11"
+                    },
+                    { 
+                        question: "What is 2.125 in binary? Answer in Q3.3. Passcode: DgLa$0Wi", 
+                        answer: "010.001",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756260729000",
+                        tutorialText: "2.125 = 2 + 0.125 = 010 + .001 = 010.001"
+                    },
+                    { 
+                        question: "What is 7.5 in binary? Answer in Q4.2. Passcode: DgLa$0Wi", 
+                        answer: "0111.10",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756260729000",
+                        tutorialText: "7.5 = 7 + 0.5 = 0111 + .10 = 0111.10"
+                    }
+                ]
+            },
+            {
+                conceptName: "Base-10 to binary. Fractions. 3 tries.",
+                problems: [
+                    { 
+                        question: "What is 4.8 in binary? Answer in Q4.2. Passcode: DgLa$0Wi", 
+                        answer: "0100.11",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756261254000",
+                        tutorialText: "4.8 approximates to 4.75 = 0100.11"
+                    },
+                    { 
+                        question: "What is 2.3 in binary? Answer in Q3.3. Passcode: DgLa$0Wi", 
+                        answer: "010.010",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756261353000",
+                        tutorialText: "2.3 approximates to 2.25 = 010.010"
+                    },
+                    { 
+                        question: "What is 7.1 in binary? Answer in Q4.2. Passcode: DgLa$0Wi", 
+                        answer: "0111.00",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756261466000",
+                        tutorialText: "7.1 approximates to 7.0 = 0111.00"
+                    }
+                ]
+            },
+            {
+                conceptName: "Binary to HEX representation. Convert these binary numbers to 4-digit HEX number. 3 tries",
+                problems: [
+                    { 
+                        question: "Convert binary 0000011111001111 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "07CF",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756263652000",
+                        tutorialText: "0000 0111 1100 1111 = 0 7 C F = 07CF"
+                    },
+                    { 
+                        question: "Convert binary 1010111110000001 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "AF81",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756263768000",
+                        tutorialText: "1010 1111 1000 0001 = A F 8 1 = AF81"
+                    },
+                    { 
+                        question: "Convert binary 0101101011101100 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "5AEC",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756263838000",
+                        tutorialText: "0101 1010 1110 1100 = 5 A E C = 5AEC"
+                    }
+                ]
+            },
+            {
+                conceptName: "HEX representation with binary point. 3 tries.",
+                problems: [
+                    { 
+                        question: "Convert binary 011111001.111 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "07AF",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756263923000",
+                        tutorialText: "0111 1100 1.111 = 7 C . F"
+                    },
+                    { 
+                        question: "Convert binary 0101111.10000001 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "2F.81",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756264061000",
+                        tutorialText: "0010 1111 . 1000 0001 = 2 F . 8 1"
+                    },
+                    { 
+                        question: "Convert binary 0101.011101100 to HEX. Use upper-case letters, no 0x prefix. Passcode: DgLa$0Wi", 
+                        answer: "5.6C",
+                        videoUrl: "https://cuboulder.zoom.us/rec/share/qWZU6lBX1h2F28fHVfAXlt-4GFj5Qib5XNcH-tRvHszBQ9zBjP9dU9tS2RxYq3iW.3n58fy50o4IK-r1d?startTime=1756264159000",
+                        tutorialText: "0000 101.0 1110 1100 =  0 A . E C"
+                    }
+                ]
+            }
+        ];
+        
+        let currentSequenceIndex = 0;
+        let currentProblemIndex = 0;
+        let totalQuestionsAnswered = 0;
+        let currentSequence = null;
+        let currentProblem = null;
+        let stats = {
+            attempts: 0,
+            sequencesCompleted: 0,
+            startTime: new Date()
+        };
+        
+        function loadCurrentProblem() {
+            if (currentSequenceIndex >= PROBLEM_SEQUENCES.length) {
+                showCompletion();
+                return;
+            }
+            
+            currentSequence = PROBLEM_SEQUENCES[currentSequenceIndex];
+            currentProblem = currentSequence.problems[currentProblemIndex];
+            
+            document.getElementById('conceptName').textContent = currentSequence.conceptName;
+            document.getElementById('sequenceProgress').textContent = "You get " + currentSequence.problems.length + " tries";
+            document.getElementById('totalProgress').textContent = "Question " + (totalQuestionsAnswered + 1) + " of " + TOTAL_QUESTIONS_REQUIRED + " Total";
+            document.getElementById('question').textContent = currentProblem.question;
+            document.getElementById('answer').value = '';
+            document.getElementById('feedback').classList.add('hidden');
+            
+            setTimeout(function() {
+                document.getElementById('answer').focus();
+            }, 100);
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim();
+            
+            if (!userAnswer) {
+                showFeedback('Please enter an answer', 'incorrect');
+                return;
+            }
+            
+            stats.attempts++;
+            
+            let isCorrect = false;
+            if (userAnswer === currentProblem.answer.toString()) {
+                isCorrect = true;
+            } else {
+                const userNum = parseFloat(userAnswer);
+                const correctNum = parseFloat(currentProblem.answer);
+                if (!isNaN(userNum) && !isNaN(correctNum) && Math.abs(userNum - correctNum) < 0.01) {
+                    isCorrect = true;
+                }
+            }
+
+            if (isCorrect) {
+                totalQuestionsAnswered++;
+                generateProgressCode();
+                
+                if (totalQuestionsAnswered >= TOTAL_QUESTIONS_REQUIRED) {
+                    showFeedback('Perfect! You have completed all ' + TOTAL_QUESTIONS_REQUIRED + ' questions.', 'correct');
+                    setTimeout(showCompletion, 2000);
+                } else {
+                    showFeedback('Correct! Question ' + totalQuestionsAnswered + ' done! (Progress saved)', 'correct');
+                    setTimeout(function() {
+                        currentSequenceIndex++;
+                        currentProblemIndex = 0;
+                        loadCurrentProblem();
+                    }, 2000);
+                }
+            } else {
+                showFeedback('Check solutions.', 'incorrect');
+                setTimeout(showTutorial, 1500);
+            }
+            
+            updateStats();
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = 'feedback ' + type;
+            feedback.classList.remove('hidden');
+        }
+
+        function showTutorial() {
+            document.querySelector('.question-box').style.display = 'none';
+            document.getElementById('feedback').classList.add('hidden');
+            
+            const tutorial = document.getElementById('videoTutorial');
+            const videoContent = document.getElementById('videoContent');
+            
+            let tutorialHTML = '<p><strong>Video URL:</strong> <a href="' + currentProblem.videoUrl + '" target="_blank">Click here to watch tutorial video</a></p>';
+            
+            tutorialHTML += '<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left;">';
+            tutorialHTML += '<h4>How to Solve:</h4>';
+            tutorialHTML += '<p>' + currentProblem.tutorialText + '</p>';
+            tutorialHTML += '</div>';
+            
+            videoContent.innerHTML = tutorialHTML;
+            tutorial.classList.remove('hidden');
+        }
+
+        function continueAfterVideo() {
+            document.getElementById('videoTutorial').classList.add('hidden');
+            document.querySelector('.question-box').style.display = 'block';
+            
+            currentProblemIndex++;
+            if (currentProblemIndex >= currentSequence.problems.length) {
+                currentProblemIndex = 0;
+            }
+            
+            currentProblem = currentSequence.problems[currentProblemIndex];
+            
+            document.getElementById('conceptName').textContent = currentSequence.conceptName;
+            document.getElementById('sequenceProgress').textContent = 'You get ' + currentSequence.problems.length + ' tries';
+            document.getElementById('totalProgress').textContent = 'Question ' + (totalQuestionsAnswered + 1) + ' of ' + TOTAL_QUESTIONS_REQUIRED + ' Total';
+            document.getElementById('question').textContent = currentProblem.question;
+            document.getElementById('answer').value = '';
+            
+            showFeedback('OK. Now go on to the next try.', 'correct');
+            setTimeout(function() {
+                document.getElementById('answer').focus();
+            }, 100);
+        }
+
+        function updateStats() {
+            const remaining = TOTAL_QUESTIONS_REQUIRED - totalQuestionsAnswered;
+            const percentage = Math.round((totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED) * 100);
+            
+            document.getElementById('attempts').textContent = stats.attempts;
+            document.getElementById('completed').textContent = totalQuestionsAnswered;
+            document.getElementById('remaining').textContent = remaining;
+            document.getElementById('grade').textContent = percentage + '%';
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = totalQuestionsAnswered + ' of ' + TOTAL_QUESTIONS_REQUIRED + ' questions completed';
+            
+            if (percentage >= 100) {
+                document.getElementById('gradeCard').classList.add('grade-passing');
+            }
+        }
+
+        function showCompletion() {
+            document.querySelector('.question-box').style.display = 'none';
+            document.getElementById('completionMessage').classList.remove('hidden');
+            
+            const endTime = new Date();
+            const timeSpent = Math.round((endTime - stats.startTime) / 1000 / 60);
+            const efficiency = Math.round((totalQuestionsAnswered / stats.attempts) * 100);
+            
+            document.getElementById('finalStats').innerHTML = '<h3>Final Results:</h3>' +
+                '<p><strong>Questions Completed:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + '</p>' +
+                '<p><strong>Total Attempts:</strong> ' + stats.attempts + '</p>' +
+                '<p><strong>Accuracy:</strong> ' + efficiency + '%</p>' +
+                '<p><strong>Time Spent:</strong> ' + timeSpent + ' minutes</p>' +
+                '<p><strong>Final Grade:</strong> 100% - COMPLETE!</p>';
+        }
+
+        function generateProgressCode() {
+            const timestamp = Date.now();
+            const percentage = Math.round((totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED) * 100);
+            
+            const effortPoints = Math.min(stats.attempts, TOTAL_QUESTIONS_REQUIRED);
+            const effortScore = (0.7 * effortPoints / TOTAL_QUESTIONS_REQUIRED * 100);
+            const accuracyScore = (0.3 * totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED * 100);
+            const totalGrade = Math.round(effortScore + accuracyScore);
+            
+            const checksum = (totalQuestionsAnswered * 17 + stats.attempts * 23 + totalGrade * 7) % 1000;
+            
+            const code = 'PROG' + timestamp.toString().slice(-6) + 'Q' + totalQuestionsAnswered + 'A' + stats.attempts + 'G' + totalGrade + 'V' + checksum;
+            
+            document.getElementById('currentProgressCode').textContent = code;
+            document.getElementById('progressSummary').innerHTML = 
+                '<strong>Progress:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + ' questions completed (' + percentage + '%)<br>' +
+                '<strong>Calculated Grade:</strong> ' + totalGrade + '/100 points<br>' +
+                '<small>Effort: ' + Math.round(effortScore) + '/70 pts (' + effortPoints + ' attempts) • Accuracy: ' + Math.round(accuracyScore) + '/30 pts (' + totalQuestionsAnswered + ' correct)</small><br>' +
+                '<small style="color: #666;">Verification: V' + checksum + '</small>';
+        }
+
+        function generateCompletionCode() {
+            const timestamp = Date.now();
+            const performanceScore = Math.round((totalQuestionsAnswered / stats.attempts) * 1000);
+            const code = 'COMPLETE' + timestamp.toString().slice(-6) + performanceScore;
+            
+            document.getElementById('completionCode').innerHTML = 
+                '<h3>Your Final Completion Code:</h3>' +
+                '<div class="code-display">' + code + '</div>' +
+                '<p><strong>For Canvas Gradebook:</strong> This code shows you completed ALL 7 questions!</p>';
+            document.getElementById('completionCode').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('answer').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            loadCurrentProblem();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
