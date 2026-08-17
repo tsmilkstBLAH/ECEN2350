@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Conversion Homework</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .question-box {
+            background: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .concept-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .input-section {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        input[type="text"] {
+            font-size: 1.2em;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            width: 250px;
+            margin: 10px;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+        
+        .video-section {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .video-info {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .continue-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 15px;
+        }
+        
+        .continue-btn:hover {
+            background: #1e7e34;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-box {
+            background: #ffc107;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+        }
+        
+        .progress-section {
+            margin: 25px 0;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            background: #28a745;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 15px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .code-section {
+            background: #e8f4f8;
+            border: 2px solid #17a2b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .completion-section {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .grade-passing {
+            background: #28a745 !important;
+            color: white !important;
+        }
+
+
+        .conversion-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            table-layout: fixed;
+        }
+
+        .conversion-table th,
+        .conversion-table td {
+            border: 1px solid #555;
+            padding: 8px 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .conversion-table th {
+            background: #f0f0f0;
+            font-size: 0.86em;
+            line-height: 1.2;
+        }
+
+        .conversion-table td.given-cell {
+            background: #fff3cd;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .conversion-table input {
+            width: 92%;
+            box-sizing: border-box;
+            padding: 7px 4px;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .cell-wrong {
+            background: #f8d7da !important;
+        }
+
+        .cell-correct {
+            background: #d4edda !important;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Number Conversion Homework Part 1</h1>
+        <p class="subtitle">Each row is one question. If you miss the first version, you will get a second-chance version of that row.</p>
+        
+        <div class="question-box">
+            <div class="concept-header">
+                <h3 id="conceptName">Ready...</h3>
+                <p id="sequenceProgress">First try, then a second-chance question if needed.</p>
+                <div><strong id="totalProgress">Question 1 of 12 Total</strong></div>
+            </div>
+            
+            <div class="question" id="question">Complete the row. The yellow cell is the value you are given.</div>
+
+            <div id="tableQuestion"></div>
+
+            <div class="input-section">
+                <button class="submit-btn" onclick="checkAnswer()">Submit Row</button>
+            </div>
+        </div>
+        
+        <div class="feedback hidden" id="feedback"></div>
+        
+        <div class="video-section hidden" id="videoTutorial">
+            <h3>Video Solution</h3>
+            <p>Watch this tutorial before trying again:</p>
+            <div class="video-info">
+                <div id="videoContent"></div>
+            </div>
+            <button class="continue-btn" onclick="continueAfterVideo()">I'm Ready to Try Again</button>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-number" id="attempts">0</span>
+                <span class="stat-label">Total Attempts</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="completed">0</span>
+                <span class="stat-label">Questions Done</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="remaining">12</span>
+                <span class="stat-label">Questions Left</span>
+            </div>
+            <div class="stat-box" id="gradeCard">
+                <span class="stat-number" id="grade">0%</span>
+                <span class="stat-label">Progress</span>
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">0 of 12 questions completed</p>
+        </div>
+        
+        <div class="code-section">
+            <h3>Your Current Progress Code:</h3>
+            <div class="code-display" id="currentProgressCode">Not started yet</div>
+            <p><strong>For Canvas:</strong> Copy this code anytime and submit it to Canvas as your answer when you are done.</p>
+            <div id="progressSummary" style="background: white; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                0/12 questions completed (0%)
+            </div>
+            <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                <strong>Grading Formula:</strong> 70% Effort (problems attempted) + 30% Accuracy (problems correct)
+            </div>
+        </div>
+        
+        <div class="completion-section hidden" id="completionMessage">
+            <h2>Assignment Complete!</h2>
+            <p>Excellent! You've successfully completed all 12 questions!</p>
+            <div id="finalStats"></div>
+            <button class="submit-btn" onclick="generateCompletionCode()">Generate Completion Code for Canvas</button>
+            <div class="code-section hidden" id="completionCode"></div>
+        </div>
+    </div>
+
+    <script>
+        const TOTAL_QUESTIONS_REQUIRED = 12;
+
+        const COLUMN_HEADERS = [
+            'Base-10',
+            'Positive binary<br>(Q8.0)',
+            'Signed fixed point Q6.2<br>(Sign-magnitude)',
+            'Unsigned fixed point<br>Q6.2',
+            "2's complement Q8.0",
+            "2's complement Q6.2"
+        ];
+
+        // Each entry below is ONE ROW / ONE QUESTION.
+        // attempts[0] is the first question.
+        // attempts[1] is the second-chance question shown after a miss.
+        // To change a second-chance question, edit only the second object.
+        //
+        // Conversion assumptions used by the automatic answer checker:
+        //   * Q8.0 has 8 total bits and no fraction bits.
+        //   * Q6.2 has 8 total bits and 2 fraction bits.
+        //   * Signed Q6.2 sign-magnitude uses 1 sign bit + 5 integer bits + 2 fraction bits.
+        //   * Values that need more fractional precision are truncated toward zero.
+        //   * Out-of-range / impossible representations use X.
+        const PROBLEM_SEQUENCES = [
+            {
+                conceptName: 'Row 1: Start from base-10',
+                attempts: [
+                    { value: 37, givenColumn: 0, givenText: '37' },
+                    { value: 25, givenColumn: 0, givenText: '25' }
+                ]
+            },
+            {
+                conceptName: 'Row 2: Start from negative base-10',
+                attempts: [
+                    { value: -37, givenColumn: 0, givenText: '-37' },
+                    { value: -18, givenColumn: 0, givenText: '-18' }
+                ]
+            },
+            {
+                conceptName: 'Row 3: Start from fractional base-10',
+                attempts: [
+                    { value: 3.625, givenColumn: 0, givenText: '3.625' },
+                    { value: 5.875, givenColumn: 0, givenText: '5.875' }
+                ]
+            },
+            {
+                conceptName: 'Row 4: Start from negative fractional base-10',
+                attempts: [
+                    { value: -3.25, givenColumn: 0, givenText: '-3.25' },
+                    { value: -6.5, givenColumn: 0, givenText: '-6.5' }
+                ]
+            },
+            {
+                conceptName: 'Row 5: Start from positive binary Q8.0',
+                attempts: [
+                    { value: 21, givenColumn: 1, givenText: '00010101' },
+                    { value: 50, givenColumn: 1, givenText: '00110010' }
+                ]
+            },
+            {
+                conceptName: 'Row 6: Start from positive binary Q8.0',
+                attempts: [
+                    { value: 141, givenColumn: 1, givenText: '10001101' },
+                    { value: 124, givenColumn: 1, givenText: '01111100' }
+                ]
+            },
+            {
+                conceptName: 'Row 7: Start from signed Q6.2 sign-magnitude',
+                attempts: [
+                    { value: -4.5, givenColumn: 2, givenText: '10010010' },
+                    { value: -6.0, givenColumn: 2, givenText: '10011000' }
+                ]
+            },
+            {
+                conceptName: 'Row 8: Start from signed Q6.2 sign-magnitude',
+                attempts: [
+                    { value: 6.75, givenColumn: 2, givenText: '00011011' },
+                    { value: 9.75, givenColumn: 2, givenText: '00100111' }
+                ]
+            },
+            {
+                conceptName: 'Row 9: Start from unsigned Q6.2',
+                attempts: [
+                    { value: 57.5, givenColumn: 3, givenText: '11100110' },
+                    { value: 50.5, givenColumn: 3, givenText: '11001010' }
+                ]
+            },
+            {
+                conceptName: 'Row 10: Start from unsigned Q6.2',
+                attempts: [
+                    { value: 5.25, givenColumn: 3, givenText: '00010101' },
+                    { value: 15.25, givenColumn: 3, givenText: '00111101' }
+                ]
+            },
+            {
+                conceptName: "Row 11: Start from 2's complement Q8.0",
+                attempts: [
+                    { value: -14, givenColumn: 4, givenText: '11110010' },
+                    { value: -28, givenColumn: 4, givenText: '11100100' }
+                ]
+            },
+            {
+                conceptName: "Row 12: Start from 2's complement Q8.0",
+                attempts: [
+                    { value: 27, givenColumn: 4, givenText: '00011011' },
+                    { value: 54, givenColumn: 4, givenText: '00110110' }
+                ]
+            }
+        ];
+
+        let currentSequenceIndex = 0;
+        let currentAttemptIndex = 0;
+        let totalQuestionsAnswered = 0;
+        let currentSequence = null;
+        let currentProblem = null;
+        let stats = {
+            attempts: 0,
+            sequencesCompleted: 0,
+            startTime: new Date()
+        };
+        
+        function truncateTowardZero(value, step) {
+            return Math.trunc(value / step) * step;
+        }
+
+        function toBinaryUnsigned(integerValue, bits) {
+            if (integerValue < 0 || integerValue > (2 ** bits - 1)) return 'X';
+            return integerValue.toString(2).padStart(bits, '0');
+        }
+
+        function positiveQ80(value) {
+            if (value < 0) return 'X';
+            const v = Math.trunc(value);
+            return toBinaryUnsigned(v, 8);
+        }
+
+        function signMagnitudeQ62(value) {
+            const v = truncateTowardZero(value, 0.25);
+            const magnitude = Math.abs(v);
+            if (magnitude > 31.75) return 'X';
+            const scaledMagnitude = Math.round(magnitude * 4);
+            const magnitudeBits = scaledMagnitude.toString(2).padStart(7, '0');
+            const signBit = v < 0 ? '1' : '0';
+            return signBit + magnitudeBits;
+        }
+
+        function unsignedQ62(value) {
+            const v = truncateTowardZero(value, 0.25);
+            if (v < 0 || v > 63.75) return 'X';
+            return Math.round(v * 4).toString(2).padStart(8, '0');
+        }
+
+        function twosComplementQ80(value) {
+            const v = Math.trunc(value);
+            if (v < -128 || v > 127) return 'X';
+            return ((v + 256) % 256).toString(2).padStart(8, '0');
+        }
+
+        function twosComplementQ62(value) {
+            const v = truncateTowardZero(value, 0.25);
+            if (v < -32 || v > 31.75) return 'X';
+            const scaled = Math.round(v * 4);
+            return ((scaled + 256) % 256).toString(2).padStart(8, '0');
+        }
+
+        function formatBase10(value) {
+            return Number(value).toString();
+        }
+
+        function makeAnswers(value) {
+            return [
+                formatBase10(value),
+                positiveQ80(value),
+                signMagnitudeQ62(value),
+                unsignedQ62(value),
+                twosComplementQ80(value),
+                twosComplementQ62(value)
+            ];
+        }
+
+        function normalizeAnswer(answer) {
+            let a = answer.trim().toUpperCase().replace(/\s+/g, '');
+            if (a === 'NA' || a === 'N\\A' || a === 'NOTPOSSIBLE' || a === 'IMPOSSIBLE') {
+                return 'X';
+            }
+            return a;
+        }
+
+        function renderTableQuestion() {
+            const answers = makeAnswers(currentProblem.value);
+            let html = '<table class="conversion-table"><thead><tr>';
+
+            COLUMN_HEADERS.forEach(header => {
+                html += '<th>' + header + '</th>';
+            });
+            html += '</tr></thead><tbody><tr>';
+
+            for (let i = 0; i < COLUMN_HEADERS.length; i++) {
+                if (i === currentProblem.givenColumn) {
+                    html += '<td class="given-cell">' + currentProblem.givenText + '</td>';
+                } else {
+                    html += '<td id="cell-' + i + '">' +
+                        '<input type="text" id="answer-' + i + '" autocomplete="off" ' +
+                        'aria-label="' + COLUMN_HEADERS[i].replace(/<br>/g, ' ') + '">' +
+                        '</td>';
+                }
+            }
+
+            html += '</tr></tbody></table>';
+            document.getElementById('tableQuestion').innerHTML = html;
+
+            const firstInput = document.querySelector('.conversion-table input');
+            if (firstInput) setTimeout(() => firstInput.focus(), 100);
+        }
+
+        function loadCurrentProblem() {
+            if (currentSequenceIndex >= PROBLEM_SEQUENCES.length) {
+                showCompletion();
+                return;
+            }
+
+            currentSequence = PROBLEM_SEQUENCES[currentSequenceIndex];
+            currentProblem = currentSequence.attempts[currentAttemptIndex];
+
+            document.getElementById('conceptName').textContent = currentSequence.conceptName;
+            document.getElementById('sequenceProgress').textContent =
+                currentAttemptIndex === 0 ? 'Try 1' : 'Second-chance question';
+            document.getElementById('totalProgress').textContent =
+                'Question ' + (totalQuestionsAnswered + 1) + ' of ' + TOTAL_QUESTIONS_REQUIRED + ' Total';
+            document.getElementById('question').textContent =
+                'Complete every blank cell in the row. Use X if the value cannot be represented.';
+
+            document.getElementById('feedback').classList.add('hidden');
+            renderTableQuestion();
+        }
+
+        function checkAnswer() {
+            const correctAnswers = makeAnswers(currentProblem.value);
+            let isCorrect = true;
+            let anyBlank = false;
+
+            for (let i = 0; i < COLUMN_HEADERS.length; i++) {
+                if (i === currentProblem.givenColumn) continue;
+
+                const input = document.getElementById('answer-' + i);
+                const cell = document.getElementById('cell-' + i);
+                const userAnswer = normalizeAnswer(input.value);
+                const correctAnswer = normalizeAnswer(correctAnswers[i]);
+
+                cell.classList.remove('cell-wrong', 'cell-correct');
+
+                if (!userAnswer) {
+                    anyBlank = true;
+                    isCorrect = false;
+                    cell.classList.add('cell-wrong');
+                } else if (userAnswer === correctAnswer) {
+                    cell.classList.add('cell-correct');
+                } else {
+                    isCorrect = false;
+                    cell.classList.add('cell-wrong');
+                }
+            }
+
+            if (anyBlank) {
+                showFeedback('Please fill in every blank cell.', 'incorrect');
+                return;
+            }
+
+            stats.attempts++;
+
+            if (isCorrect) {
+                totalQuestionsAnswered++;
+                generateProgressCode();
+
+                if (totalQuestionsAnswered >= TOTAL_QUESTIONS_REQUIRED) {
+                    showFeedback('Perfect! You have completed all ' + TOTAL_QUESTIONS_REQUIRED + ' questions.', 'correct');
+                    setTimeout(showCompletion, 2000);
+                } else {
+                    showFeedback('Correct! Row ' + totalQuestionsAnswered + ' done!', 'correct');
+                    setTimeout(function() {
+                        currentSequenceIndex++;
+                        currentAttemptIndex = 0;
+                        loadCurrentProblem();
+                    }, 1500);
+                }
+            } else {
+                if (currentAttemptIndex === 0) {
+                    showFeedback('Not quite. Review the feedback, then try a second-chance question.', 'incorrect');
+                } else {
+                    showFeedback('Not quite. Review the solution, then retry the second-chance question.', 'incorrect');
+                }
+                setTimeout(showTutorial, 1200);
+            }
+
+            updateStats();
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = 'feedback ' + type;
+            feedback.classList.remove('hidden');
+        }
+
+        function showTutorial() {
+            document.querySelector('.question-box').style.display = 'none';
+            document.getElementById('feedback').classList.add('hidden');
+
+            const tutorial = document.getElementById('videoTutorial');
+            const videoContent = document.getElementById('videoContent');
+            const answers = makeAnswers(currentProblem.value);
+
+            let tutorialHTML = '<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left;">';
+            tutorialHTML += '<h4>Correct row for the question you just tried:</h4>';
+            tutorialHTML += '<p style="font-family: Courier New, monospace; word-spacing: 8px;">' + answers.join(' | ') + '</p>';
+            tutorialHTML += '<p>The columns are in the same order as the table. When you continue, you will get a different value for the same kind of conversion.</p>';
+            tutorialHTML += '</div>';
+
+            videoContent.innerHTML = tutorialHTML;
+            tutorial.classList.remove('hidden');
+        }
+
+        function continueAfterVideo() {
+            document.getElementById('videoTutorial').classList.add('hidden');
+            document.querySelector('.question-box').style.display = 'block';
+
+            // HERE is the second-chance behavior:
+            // after a miss on Try 1, move from attempts[0] to attempts[1].
+            // If attempts[1] is also missed, stay on attempts[1] so the student
+            // can keep working that second-chance problem until it is correct.
+            if (currentAttemptIndex === 0 && currentSequence.attempts.length > 1) {
+                currentAttemptIndex = 1;
+            }
+
+            currentProblem = currentSequence.attempts[currentAttemptIndex];
+            loadCurrentProblem();
+        }
+
+        function updateStats() {
+            const remaining = TOTAL_QUESTIONS_REQUIRED - totalQuestionsAnswered;
+            const percentage = Math.round((totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED) * 100);
+            
+            document.getElementById('attempts').textContent = stats.attempts;
+            document.getElementById('completed').textContent = totalQuestionsAnswered;
+            document.getElementById('remaining').textContent = remaining;
+            document.getElementById('grade').textContent = percentage + '%';
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = totalQuestionsAnswered + ' of ' + TOTAL_QUESTIONS_REQUIRED + ' questions completed';
+            
+            if (percentage >= 100) {
+                document.getElementById('gradeCard').classList.add('grade-passing');
+            }
+        }
+
+        function showCompletion() {
+            document.querySelector('.question-box').style.display = 'none';
+            document.getElementById('completionMessage').classList.remove('hidden');
+            
+            const endTime = new Date();
+            const timeSpent = Math.round((endTime - stats.startTime) / 1000 / 60);
+            const efficiency = Math.round((totalQuestionsAnswered / stats.attempts) * 100);
+            
+            document.getElementById('finalStats').innerHTML = '<h3>Final Results:</h3>' +
+                '<p><strong>Questions Completed:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + '</p>' +
+                '<p><strong>Total Attempts:</strong> ' + stats.attempts + '</p>' +
+                '<p><strong>Accuracy:</strong> ' + efficiency + '%</p>' +
+                '<p><strong>Time Spent:</strong> ' + timeSpent + ' minutes</p>' +
+                '<p><strong>Final Grade:</strong> 100% - COMPLETE!</p>';
+        }
+
+        function generateProgressCode() {
+            const timestamp = Date.now();
+            const percentage = Math.round((totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED) * 100);
+            
+            const effortPoints = Math.min(stats.attempts, TOTAL_QUESTIONS_REQUIRED);
+            const effortScore = (0.7 * effortPoints / TOTAL_QUESTIONS_REQUIRED * 100);
+            const accuracyScore = (0.3 * totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED * 100);
+            const totalGrade = Math.round(effortScore + accuracyScore);
+            
+            const checksum = (totalQuestionsAnswered * 17 + stats.attempts * 23 + totalGrade * 7) % 1000;
+            
+            const code = 'PROG' + timestamp.toString().slice(-6) + 'Q' + totalQuestionsAnswered + 'A' + stats.attempts + 'G' + totalGrade + 'V' + checksum;
+            
+            document.getElementById('currentProgressCode').textContent = code;
+            document.getElementById('progressSummary').innerHTML = 
+                '<strong>Progress:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + ' questions completed (' + percentage + '%)<br>' +
+                '<strong>Calculated Grade:</strong> ' + totalGrade + '/100 points<br>' +
+                '<small>Effort: ' + Math.round(effortScore) + '/70 pts (' + effortPoints + ' attempts) • Accuracy: ' + Math.round(accuracyScore) + '/30 pts (' + totalQuestionsAnswered + ' correct)</small><br>' +
+                '<small style="color: #666;">Verification: V' + checksum + '</small>';
+        }
+
+        function generateCompletionCode() {
+            const timestamp = Date.now();
+            const performanceScore = Math.round((totalQuestionsAnswered / stats.attempts) * 1000);
+            const code = 'COMPLETE' + timestamp.toString().slice(-6) + performanceScore;
+            
+            document.getElementById('completionCode').innerHTML = 
+                '<h3>Your Final Completion Code:</h3>' +
+                '<div class="code-display">' + code + '</div>' +
+                '<p><strong>For Canvas Gradebook:</strong> This code shows you completed ALL 7 questions!</p>';
+            document.getElementById('completionCode').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.target.matches('.conversion-table input')) {
+                    checkAnswer();
+                }
+            });
+
+            loadCurrentProblem();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
