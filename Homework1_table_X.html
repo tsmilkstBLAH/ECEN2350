@@ -476,6 +476,8 @@
         let currentSequenceIndex = 0;
         let currentAttemptIndex = 0;
         let totalQuestionsAnswered = 0;
+        let totalQuestionsCorrect = 0;
+        let advanceAfterVideo = false;
         let currentSequence = null;
         let currentProblem = null;
         let stats = {
@@ -635,6 +637,7 @@
 
             if (isCorrect) {
                 totalQuestionsAnswered++;
+                totalQuestionsCorrect++;
                 generateProgressCode();
 
                 if (totalQuestionsAnswered >= TOTAL_QUESTIONS_REQUIRED) {
@@ -650,9 +653,13 @@
                 }
             } else {
                 if (currentAttemptIndex === 0) {
-                    showFeedback('Not quite. Review the feedback, then try a second-chance question.', 'incorrect');
+                    showFeedback('Not quite. Review the solution, then try a second-chance question.', 'incorrect');
                 } else {
-                    showFeedback('Not quite. Review the solution, then retry the second-chance question.', 'incorrect');
+                    // Second chance missed: count this row as completed but incorrect.
+                    totalQuestionsAnswered++;
+                    advanceAfterVideo = true;
+                    generateProgressCode();
+                    showFeedback('Incorrect. This row will be counted wrong. Review the solution, then continue to the next row.', 'incorrect');
                 }
                 setTimeout(showTutorial, 1200);
             }
@@ -678,7 +685,7 @@
             let tutorialHTML = '<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left;">';
             tutorialHTML += '<h4>Correct row for the question you just tried:</h4>';
             tutorialHTML += '<p style="font-family: Courier New, monospace; word-spacing: 8px;">' + answers.join(' | ') + '</p>';
-            tutorialHTML += '<p>The columns are in the same order as the table. When you continue, you will get a different value for the same kind of conversion.</p>';
+            tutorialHTML += '<p>The columns are in the same order as the table.</p>';
             tutorialHTML += '</div>';
 
             videoContent.innerHTML = tutorialHTML;
@@ -689,10 +696,24 @@
             document.getElementById('videoTutorial').classList.add('hidden');
             document.querySelector('.question-box').style.display = 'block';
 
-            // HERE is the second-chance behavior:
-            // after a miss on Try 1, move from attempts[0] to attempts[1].
-            // If attempts[1] is also missed, stay on attempts[1] so the student
-            // can keep working that second-chance problem until it is correct.
+            // If Try 2 was missed, that row is finished and counted wrong.
+            // Move on to the next row instead of repeating Try 2.
+            if (advanceAfterVideo) {
+                advanceAfterVideo = false;
+
+                if (totalQuestionsAnswered >= TOTAL_QUESTIONS_REQUIRED) {
+                    showCompletion();
+                    return;
+                }
+
+                currentSequenceIndex++;
+                currentAttemptIndex = 0;
+                loadCurrentProblem();
+                updateStats();
+                return;
+            }
+
+            // If Try 1 was missed, move to the second-chance problem.
             if (currentAttemptIndex === 0 && currentSequence.attempts.length > 1) {
                 currentAttemptIndex = 1;
             }
@@ -724,11 +745,12 @@
             
             const endTime = new Date();
             const timeSpent = Math.round((endTime - stats.startTime) / 1000 / 60);
-            const efficiency = Math.round((totalQuestionsAnswered / stats.attempts) * 100);
+            const efficiency = Math.round((totalQuestionsCorrect / TOTAL_QUESTIONS_REQUIRED) * 100);
             
             document.getElementById('finalStats').innerHTML = '<h3>Final Results:</h3>' +
                 '<p><strong>Questions Completed:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + '</p>' +
                 '<p><strong>Total Attempts:</strong> ' + stats.attempts + '</p>' +
+                '<p><strong>Rows Correct:</strong> ' + totalQuestionsCorrect + '/' + TOTAL_QUESTIONS_REQUIRED + '</p>' +
                 '<p><strong>Accuracy:</strong> ' + efficiency + '%</p>' +
                 '<p><strong>Time Spent:</strong> ' + timeSpent + ' minutes</p>' +
                 '<p><strong>Final Grade:</strong> 100% - COMPLETE!</p>';
@@ -740,7 +762,7 @@
             
             const effortPoints = Math.min(stats.attempts, TOTAL_QUESTIONS_REQUIRED);
             const effortScore = (0.7 * effortPoints / TOTAL_QUESTIONS_REQUIRED * 100);
-            const accuracyScore = (0.3 * totalQuestionsAnswered / TOTAL_QUESTIONS_REQUIRED * 100);
+            const accuracyScore = (0.3 * totalQuestionsCorrect / TOTAL_QUESTIONS_REQUIRED * 100);
             const totalGrade = Math.round(effortScore + accuracyScore);
             
             const checksum = (totalQuestionsAnswered * 17 + stats.attempts * 23 + totalGrade * 7) % 1000;
@@ -751,13 +773,13 @@
             document.getElementById('progressSummary').innerHTML = 
                 '<strong>Progress:</strong> ' + totalQuestionsAnswered + '/' + TOTAL_QUESTIONS_REQUIRED + ' questions completed (' + percentage + '%)<br>' +
                 '<strong>Calculated Grade:</strong> ' + totalGrade + '/100 points<br>' +
-                '<small>Effort: ' + Math.round(effortScore) + '/70 pts (' + effortPoints + ' attempts) • Accuracy: ' + Math.round(accuracyScore) + '/30 pts (' + totalQuestionsAnswered + ' correct)</small><br>' +
+                '<small>Effort: ' + Math.round(effortScore) + '/70 pts (' + effortPoints + ' attempts) • Accuracy: ' + Math.round(accuracyScore) + '/30 pts (' + totalQuestionsCorrect + ' correct)</small><br>' +
                 '<small style="color: #666;">Verification: V' + checksum + '</small>';
         }
 
         function generateCompletionCode() {
             const timestamp = Date.now();
-            const performanceScore = Math.round((totalQuestionsAnswered / stats.attempts) * 1000);
+            const performanceScore = Math.round((totalQuestionsCorrect / TOTAL_QUESTIONS_REQUIRED) * 1000);
             const code = 'COMPLETE' + timestamp.toString().slice(-6) + performanceScore;
             
             document.getElementById('completionCode').innerHTML = 
