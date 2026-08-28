@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECEN 2350 - HW2 Number Conversion</title>
+<style>
+:root{
+  --ink:#1a1a1a; --paper:#f5f5f5; --card:#fff; --accent:#007bff;
+  --good:#28a745; --bad:#dc3545; --line:#777; --note:#fff3cd;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+.container{max-width:1120px;margin:0 auto;background:var(--card);padding:28px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.10)}
+h1{margin:0 0 6px;text-align:center}.subtitle{text-align:center;color:#666;margin:0 0 18px}
+.notice{background:var(--note);border:1px solid #ffe69c;padding:12px 16px;border-radius:7px;margin:14px 0 18px;text-align:center;font-weight:700}
+.instructions{background:#f8f9fa;border-left:5px solid var(--accent);padding:14px 18px;margin:16px 0 22px}
+.concept-header{background:var(--accent);color:#fff;border-radius:7px;padding:14px;margin-bottom:18px;text-align:center}
+.question-box{background:#f8f9fa;border:2px solid var(--accent);border-radius:8px;padding:20px;margin:18px 0}
+.prompt{font-size:1.08rem;font-weight:700;margin-bottom:14px}.answer-grid{width:100%;overflow-x:auto}
+.hw-table{width:100%;min-width:900px;border-collapse:collapse;table-layout:fixed;background:white}
+.hw-table th,.hw-table td{border:1px solid var(--line);padding:7px 5px;text-align:center;vertical-align:middle}
+.hw-table th{background:#efefef;font-size:.84rem;line-height:1.15}.hw-table td.given{background:#f7f7f7;font-weight:bold;font-family:"Courier New",monospace}
+.hw-table td.na{background:#e9ecef;color:#666;font-weight:bold}.hw-table input{width:100%;min-width:70px;padding:8px 5px;font-size:.94rem;border:1px solid #aaa;border-radius:3px;text-align:center;font-family:"Courier New",monospace}
+.simple-table{width:100%;border-collapse:collapse;background:white}.simple-table th,.simple-table td{border:1px solid var(--line);padding:9px;text-align:center}.simple-table th{background:#efefef}.simple-table input{width:100%;padding:8px;text-align:center;font-family:"Courier New",monospace}
+button{border:0;border-radius:6px;padding:11px 24px;font-size:1rem;cursor:pointer;margin-top:16px}.submit-btn{background:var(--accent);color:white}.continue-btn{background:var(--good);color:white}
+.feedback{margin:18px 0;padding:14px;border-radius:6px;font-weight:700;text-align:center}.correct{background:#d4edda;color:#155724;border:1px solid #c3e6cb}.incorrect{background:#f8d7da;color:#721c24;border:1px solid #f1b0b7}
+.video-box{background:#e3f2fd;border:2px solid #2196f3;padding:18px;border-radius:8px;text-align:center;margin:18px 0}.video-box a{font-weight:700;font-size:1.05rem}.passcode{font-family:"Courier New",monospace;font-weight:700;background:white;padding:4px 8px;border-radius:4px;display:inline-block}.written-solution{background:#fff;border:1px solid #90caf9;border-radius:6px;padding:12px;margin:12px auto;max-width:760px;text-align:left}.solution-value{font-family:"Courier New",monospace;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}.stat{background:#ffc107;padding:14px;border-radius:7px;text-align:center}.stat strong{display:block;font-size:1.5rem}.progress-bar{height:22px;background:#e9ecef;border-radius:12px;overflow:hidden}.progress-fill{height:100%;background:var(--good);width:0%;transition:width .3s}
+.code-section{background:#e8f4f8;border:2px solid #17a2b8;border-radius:8px;padding:18px;margin-top:20px}.code-display{background:#fff;padding:10px;border-radius:5px;text-align:center;font:bold 1.15rem "Courier New",monospace;color:var(--bad);word-break:break-all}.hidden{display:none}.small{font-size:.9rem;color:#666}
+@media(max-width:700px){body{padding:10px}.container{padding:14px}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>ECEN 2350 Digital Design</h1>
+  <p class="subtitle">HW2: Number Conversion</p>
+
+  <div class="notice">If you miss a problem, a video solution (or a written solution where noted) will be shown before you try another problem of the same type.</div>
+
+  <div class="instructions">
+    <strong>Instructions:</strong>
+    One representation is given in the table. Figure out what it means, then fill in the other
+    columns with representations of the same value. If that value cannot be represented in a
+    particular format, enter <strong>X</strong>. Cells marked <strong>N/A</strong> do not need to
+    be answered. Except for Base-10, use 8 bits where the table specifies an 8-bit representation.
+  </div>
+
+  <div class="concept-header">
+    <h3 id="conceptName">Ready...</h3>
+    <div id="sequenceProgress"></div>
+    <div><strong id="totalProgress"></strong></div>
+  </div>
+
+  <div class="question-box" id="questionBox">
+    <div class="prompt" id="questionPrompt"></div>
+    <div class="answer-grid" id="answerGrid"></div>
+    <button class="submit-btn" onclick="checkAnswer()">Submit Answer</button>
+  </div>
+
+  <div class="feedback hidden" id="feedback"></div>
+
+  <div class="video-box hidden" id="videoBox">
+    <h3 id="solutionHeading">Solution</h3>
+    <div id="solutionContent"></div>
+    <button class="continue-btn" onclick="continueAfterVideo()">I'm Ready to Try Again</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><strong id="attempts">0</strong>Total Attempts</div>
+    <div class="stat"><strong id="completed">0</strong>Question Types Done</div>
+    <div class="stat"><strong id="remaining">0</strong>Question Types Left</div>
+    <div class="stat"><strong id="grade">0%</strong>Progress</div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <p style="text-align:center" id="progressText"></p>
+
+  <div class="code-section">
+    <h3>Your Current Progress Code:</h3>
+    <div class="code-display" id="currentProgressCode">Not started yet</div>
+    <p><strong>For Canvas:</strong> Copy this code and submit it when instructed.</p>
+    <div id="progressSummary"></div>
+    <div class="small"><strong>Grading Formula:</strong> 70% Effort + 30% Accuracy</div>
+  </div>
+
+  <div class="hidden" id="completionMessage">
+    <div class="feedback correct">
+      <h2>Assignment Complete!</h2>
+      <div id="finalStats"></div>
+      <button class="submit-btn" onclick="generateCompletionCode()">Generate Completion Code for Canvas</button>
+      <div class="code-section hidden" id="completionCode"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TABLE_LABELS = {
+  base10: "Base-10",
+  posq80: "Positive binary (Q8.0)",
+  smq152: "Signed fixed point Q1.5.2 (Sign-magnitude)",
+  tcq80: "2's complement Q8.0",
+  tcq62: "2's complement Q6.2",
+  hex8: "HEX (8-bits)"
+};
+const TABLE_ORDER = ["base10","posq80","smq152","tcq80","tcq62","hex8"];
+
+function ans(key, answers){ return {key:key, answers:Array.isArray(answers)?answers:[answers]}; }
+function row(givenKey, givenValue, naKeys, fields, video=null, solution=null){ return {givenKey,givenValue,naKeys,fields,video,solution}; }
+function textField(label, answers){ return {key:label,label:label,answers:Array.isArray(answers)?answers:[answers]}; }
+function textProblem(prompt, fields, video=null, solution=null){ return {prompt,fields,video,solution}; }
+function vid(url, passcode){ return {url,passcode}; }
+
+const V1="https://cuboulder.zoom.us/rec/share/pfJn8CilVtKY-MKS3mZadXAqa2TBeB6l8hCHlRit9Q4EThfmPFbUPmccW0lCXZ0d.0M5m7Vu6ilH9-Iof";
+const V2="https://cuboulder.zoom.us/rec/share/nfz7UZ08pTasfOmD7tAH1IWvhab-IpTdYNiTYo6ks8CuZGpA3J01kr2oz1k4JExJ.3DCAjJNmcVa4cQKX";
+const V3="https://cuboulder.zoom.us/rec/share/uA86NF9INWeJOFpn9ndinF-vbHgkvqmzCzTFhB7d7tQ1CeT1SO4BqlSeBC25a2L1.08niWYSaUDZ4JCWA";
+const V4="https://cuboulder.zoom.us/rec/share/uoDsW0YREVF4C6fjQuySW_is5v0NaWr79fE48kHupLJAVkH73SZYfBXhWCtbCpXe.nzQjGdSgCCAfMbum";
+
+const QUESTION_SEQUENCES = [
+  {
+    conceptName:"1a. Number representations",
+    problems:[
+      row("base10","37",[],[
+        ans("posq80","00100101"), ans("smq152","X"), ans("tcq80","00100101"), ans("tcq62","X"), ans("hex8",["0x25","25"])
+      ],vid(V1+"?startTime=1787888790000","xEF.7#6H")),
+      row("base10","42",[],[
+        ans("posq80","00101010"), ans("smq152","X"), ans("tcq80","00101010"), ans("tcq62","X"), ans("hex8",["0x2A","2A"])
+      ],vid(V1+"?startTime=1787889151000","xEF.7#6H")),
+      row("base10","33",[],[
+        ans("posq80","00100001"), ans("smq152","X"), ans("tcq80","00100001"), ans("tcq62","X"), ans("hex8",["0x21","21"])
+      ],vid(V1+"?startTime=1787889394000","xEF.7#6H"))
+    ]
+  },
+  {
+    conceptName:"1b. Number representations",
+    problems:[
+      row("base10","-37",[],[ans("posq80","X"),ans("smq152","X"),ans("tcq80","11011011"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787891965000","PsA5uc!r")),
+      row("base10","-42",[],[ans("posq80","X"),ans("smq152","X"),ans("tcq80","11010110"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787892408000","PsA5uc!r")),
+      row("base10","-33",[],[ans("posq80","X"),ans("smq152","X"),ans("tcq80","11011111"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787892614000","PsA5uc!r"))
+    ]
+  },
+  {
+    conceptName:"1c. Number representations",
+    problems:[
+      row("base10","3.625",["smq152"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787892805000","PsA5uc!r")),
+      row("base10","1.125",["smq152"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787892920000","PsA5uc!r")),
+      row("base10","2.275",["smq152"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","X"),ans("hex8","X")],vid(V2+"?startTime=1787892999000","PsA5uc!r"))
+    ]
+  },
+  {
+    conceptName:"1d. Number representations",
+    problems:[
+      row("base10","-3.25",["smq152","hex8"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","11110011")],vid(V2+"?startTime=1787893128000","PsA5uc!r")),
+      row("base10","-1.75",["smq152","hex8"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","11111001")],vid(V2+"?startTime=1787893226000","PsA5uc!r")),
+      row("base10","-2.5",["smq152","hex8"],[ans("posq80","X"),ans("tcq80","X"),ans("tcq62","11110110")],vid(V2+"?startTime=1787893341000","PsA5uc!r"))
+    ]
+  },
+  {
+    conceptName:"1e. Number representations",
+    problems:[
+      row("posq80","00010101",["smq152"],[ans("base10",["21","21.0"]),ans("tcq80","00010101"),ans("tcq62","01010100"),ans("hex8",["0x15","15"])],vid(V2+"?startTime=1787893461000","PsA5uc!r")),
+      row("posq80","00001111",["smq152"],[ans("base10",["15","15.0"]),ans("tcq80","00001111"),ans("tcq62","00111100"),ans("hex8",["0x0F","0F","0x0f","0f"])],vid(V2+"?startTime=1787893663000","PsA5uc!r")),
+      row("posq80","00000101",["smq152"],[ans("base10",["5","5.0"]),ans("tcq80","00000101"),ans("tcq62","00010100"),ans("hex8",["0x05","05"])],vid(V2+"?startTime=1787893880000","PsA5uc!r"))
+    ]
+  },
+  {
+    conceptName:"1f. Number representations",
+    problems:[
+      row("tcq80","11110010",["smq152","hex8"],[ans("base10",["-14","-14.0"]),ans("posq80","X"),ans("tcq62","11001000")],vid(V2+"?startTime=1787894414000","PsA5uc!r")),
+      row("tcq80","11111010",["smq152","hex8"],[ans("base10",["-6","-6.0"]),ans("posq80","X"),ans("tcq62","11101000")],vid(V2+"?startTime=1787894125000","PsA5uc!r")),
+      row("tcq80","11111111",["smq152","hex8"],[ans("base10",["-1","-1.0"]),ans("posq80","X"),ans("tcq62","11111100")],vid(V2+"?startTime=1787894264000","PsA5uc!r"))
+    ]
+  },
+  {
+    conceptName:"1g. Number representations",
+    problems:[
+      row("tcq62","11110010",["smq152","hex8"],[ans("base10",["-3.5","-3.50"]),ans("posq80","X"),ans("tcq80","X")],vid(V3+"?startTime=1787896922000","?a7+f0k^")),
+      row("tcq62","11111010",["smq152","hex8"],[ans("base10",["-1.5","-1.50"]),ans("posq80","X"),ans("tcq80","X")],vid(V3+"?startTime=1787897086000","?a7+f0k^")),
+      row("tcq62","11111111",["smq152","hex8"],[ans("base10",["-0.25","-.25","-0.250"]),ans("posq80","X"),ans("tcq80","X")],vid(V3+"?startTime=1787897190000","?a7+f0k^"))
+    ]
+  },
+  {
+    conceptName:"1h. Number representations",
+    problems:[
+      row("hex8","0x92",["smq152"],[ans("base10",["146","146.0"]),ans("posq80","10010010"),ans("tcq80","X"),ans("tcq62","X")],vid(V3+"?startTime=1787897318000","?a7+f0k^")),
+      row("hex8","0xA1",["smq152"],[ans("base10",["161","161.0"]),ans("posq80","10100001"),ans("tcq80","X"),ans("tcq62","X")],vid(V3+"?startTime=1787897413000","?a7+f0k^")),
+      row("hex8","0xC0",["smq152"],[ans("base10",["192","192.0"]),ans("posq80","11000000"),ans("tcq80","X"),ans("tcq62","X")],vid(V3+"?startTime=1787897476000","?a7+f0k^"))
+    ]
+  },
+  {
+    conceptName:"2a. Extending negative 2's-complement numbers",
+    problems:[
+      textProblem("Change the negative 2's complement Q5.3 number 11100.111 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","11111100.11100")],vid(V4+"?startTime=1787899070000","eluZ4i4^")),
+      textProblem("Change the negative 2's complement Q5.3 number 10101.101 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","11110101.10100")],vid(V4+"?startTime=1787899158000","eluZ4i4^")),
+      textProblem("Change the negative 2's complement Q5.3 number 10001.000 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","11110001.00000")],vid(V4+"?startTime=1787899221000","eluZ4i4^"))
+    ]
+  },
+  {
+    conceptName:"2b. Extending positive 2's-complement numbers",
+    problems:[
+      textProblem("Change the positive 2's complement Q5.3 number 01100.111 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","00001100.11100")],vid(V4+"?startTime=1787899324000","eluZ4i4^")),
+      textProblem("Change the positive 2's complement Q5.3 number 00101.101 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","00000101.10100")],vid(V4+"?startTime=1787899386000","eluZ4i4^")),
+      textProblem("Change the positive 2's complement Q5.3 number 00001.000 to a 2's complement Q8.5 number of the same value.",[textField("Q8.5 answer","00000001.00000")],vid(V4+"?startTime=1787899459000","eluZ4i4^"))
+    ]
+  },
+  {
+    conceptName:"3a. ASCII",
+    problems:[
+      textProblem("Tricky question: What is -7 in ASCII?",[textField("Answer",["X","invalid","not valid","not representable"])],vid(V4+"?startTime=1787899623000","eluZ4i4^")),
+      textProblem("Tricky question: What is -3 in ASCII?",[textField("Answer",["X","invalid","not valid","not representable"])],vid(V4+"?startTime=1787899747000","eluZ4i4^")),
+      textProblem("Tricky question: What is 13 in ASCII?",[textField("Answer",["CR","carriage return","0D","0x0D","13"])],vid(V4+"?startTime=1787899821000","eluZ4i4^"))
+    ]
+  },
+  {
+    conceptName:"3b. ASCII text",
+    problems:[
+      textProblem("What does this say? 0x45, 0x61, 0x74, 0x20, 0x6D, 0x6F, 0x72, 0x65, 0x20, 0x76, 0x65, 0x67, 0x67, 0x69, 0x65, 0x73, 0x21, 0x21, 0x21, 0x21",[textField("Text",["Eat more veggies!!!!"])],vid(V4+"?startTime=1787899923000","eluZ4i4^"),"Eat more veggies!!!!"),
+      textProblem("What does this say? 0x47 0x6F 0x20 0x42 0x55 0x46 0x46 0x53 0x21",[textField("Text",["Go BUFFS!"])],vid(V4+"?startTime=1787900084000","eluZ4i4^"),"Go BUFFS!"),
+      textProblem("What does this say? 0x59 0x6F 0x75 0x20 0x67 0x6F 0x74 0x20 0x69 0x74 0x21",[textField("Text",["You got it!"])],vid(V4+"?startTime=1787900187000","eluZ4i4^"),"You got it!")
+    ]
+  },
+  {
+    conceptName:"4. IEEE 754 half-precision floating point",
+    problems:[
+      textProblem("Give the IEEE half-precision representation of -137.03125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10110"),textField("Significand (10-bits)","0001001000")],vid(V4+"?startTime=1787900504000","eluZ4i4^")),
+      textProblem("Give the IEEE half-precision representation of 24.0625.",[textField("S (1-bit)","0"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1000000100")],null,"S = 0, Exponent = 10011, Significand = 1000000100"),
+      textProblem("Give the IEEE half-precision representation of -25.3125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1001010100")],null,"S = 1, Exponent = 10011, Significand = 1001010100")
+    ]
+  }
+];
+
+const TOTAL_QUESTIONS_REQUIRED = QUESTION_SEQUENCES.length;
+let currentSequenceIndex=0;
+let currentProblemIndex=0;
+let totalQuestionsAnswered=0;
+let stats={attempts:0,startTime:new Date()};
+
+function normalize(s){ return String(s).trim().toLowerCase().replace(/\s+/g," "); }
+function answerMatches(value,allowed){ const n=normalize(value); return allowed.some(a=>normalize(a)===n); }
+function makeInput(id){
+  const inp=document.createElement("input");
+  inp.type="text"; inp.id=id; inp.autocomplete="off"; inp.placeholder="answer";
+  inp.addEventListener("keypress",e=>{if(e.key==="Enter")checkAnswer();});
+  return inp;
+}
+
+function loadCurrentProblem(){
+  if(currentSequenceIndex>=QUESTION_SEQUENCES.length){showCompletion();return;}
+  const seq=QUESTION_SEQUENCES[currentSequenceIndex];
+  const p=seq.problems[currentProblemIndex];
+  document.getElementById("conceptName").textContent=seq.conceptName;
+  document.getElementById("sequenceProgress").textContent="Three alternate problems are available for this question type.";
+  document.getElementById("totalProgress").textContent="Question type "+(currentSequenceIndex+1)+" of "+TOTAL_QUESTIONS_REQUIRED;
+
+  const grid=document.getElementById("answerGrid"); grid.innerHTML="";
+  if(p.givenKey){
+    document.getElementById("questionPrompt").textContent="One representation is given. Complete the rest of the row.";
+    const fieldMap={}; p.fields.forEach((field,i)=>fieldMap[field.key]={field,inputIndex:i});
+    const table=document.createElement("table"); table.className="hw-table";
+    const head=document.createElement("tr");
+    TABLE_ORDER.forEach(key=>{const th=document.createElement("th");th.textContent=TABLE_LABELS[key];head.appendChild(th);});
+    table.appendChild(head);
+    const tr=document.createElement("tr");
+    TABLE_ORDER.forEach(key=>{
+      const td=document.createElement("td");
+      if(key===p.givenKey){td.className="given";td.textContent=p.givenValue;}
+      else if(p.naKeys.includes(key)){td.className="na";td.textContent="N/A";}
+      else if(fieldMap[key]){td.appendChild(makeInput("ans"+fieldMap[key].inputIndex));}
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);grid.appendChild(table);
+  }else{
+    document.getElementById("questionPrompt").textContent=p.prompt;
+    const table=document.createElement("table");table.className="simple-table";
+    const hr=document.createElement("tr");p.fields.forEach(f=>{const th=document.createElement("th");th.textContent=f.label;hr.appendChild(th);});table.appendChild(hr);
+    const tr=document.createElement("tr");p.fields.forEach((f,i)=>{const td=document.createElement("td");td.appendChild(makeInput("ans"+i));tr.appendChild(td);});table.appendChild(tr);grid.appendChild(table);
+  }
+  document.getElementById("questionBox").style.display="block";
+  document.getElementById("feedback").classList.add("hidden");
+  document.getElementById("videoBox").classList.add("hidden");
+  setTimeout(()=>document.getElementById("ans0")?.focus(),100);
+  updateStats();
+}
+
+function checkAnswer(){
+  const p=QUESTION_SEQUENCES[currentSequenceIndex].problems[currentProblemIndex];
+  const values=p.fields.map((f,i)=>document.getElementById("ans"+i)?.value ?? null);
+  if(values.some((v,i)=>document.getElementById("ans"+i) && !String(v).trim())){showFeedback("Please enter an answer in every answer box.","incorrect");return;}
+  stats.attempts++;
+  const good=p.fields.every((field,i)=>{const el=document.getElementById("ans"+i);return !el || answerMatches(values[i],field.answers);});
+  generateProgressCode();
+  if(good){
+    totalQuestionsAnswered++;showFeedback("Correct! This question type is complete.","correct");currentSequenceIndex++;currentProblemIndex=0;
+    if(currentSequenceIndex>=QUESTION_SEQUENCES.length)setTimeout(showCompletion,900);else setTimeout(loadCurrentProblem,900);
+  }else{
+    showFeedback("Not quite. Review the solution, then try another problem of this type.","incorrect");
+    document.getElementById("questionBox").style.display="none";showSolution(p);
+  }
+  updateStats();
+}
+
+function showSolution(p){
+  const box=document.getElementById("videoBox");
+  const content=document.getElementById("solutionContent"); content.innerHTML="";
+  if(p.video){
+    const v=document.createElement("div");
+    const a=document.createElement("a");a.href=p.video.url;a.target="_blank";a.rel="noopener";a.textContent="Open video solution";
+    const pass=document.createElement("p");pass.innerHTML="Passcode: <span class=\"passcode\"></span>";pass.querySelector("span").textContent=p.video.passcode;
+    v.appendChild(a);v.appendChild(pass);content.appendChild(v);
+  }
+  if(p.solution){
+    const w=document.createElement("div");w.className="written-solution";
+    const label=document.createElement("strong");label.textContent="Written answer: ";
+    const val=document.createElement("span");val.className="solution-value";val.textContent=p.solution;
+    w.appendChild(label);w.appendChild(val);content.appendChild(w);
+  }
+  if(!p.video && !p.solution){content.textContent="Review your notes and try another problem of the same type.";}
+  document.getElementById("solutionHeading").textContent=p.video ? "Solution" : "Written Solution";
+  box.classList.remove("hidden");
+}
+
+function continueAfterVideo(){
+  const seq=QUESTION_SEQUENCES[currentSequenceIndex];
+  currentProblemIndex=(currentProblemIndex+1)%seq.problems.length;
+  loadCurrentProblem();
+}
+function showFeedback(msg,type){const el=document.getElementById("feedback");el.textContent=msg;el.className="feedback "+type;el.classList.remove("hidden");}
+function updateStats(){
+  const remaining=TOTAL_QUESTIONS_REQUIRED-totalQuestionsAnswered;
+  const pct=Math.round(totalQuestionsAnswered/TOTAL_QUESTIONS_REQUIRED*100);
+  document.getElementById("attempts").textContent=stats.attempts;
+  document.getElementById("completed").textContent=totalQuestionsAnswered;
+  document.getElementById("remaining").textContent=remaining;
+  document.getElementById("grade").textContent=pct+"%";
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("progressText").textContent=totalQuestionsAnswered+" of "+TOTAL_QUESTIONS_REQUIRED+" question types completed";
+}
+function makeSixDigitScore(){
+  const accuracy=stats.attempts>0?Math.round((totalQuestionsAnswered/stats.attempts)*1000):0;
+  const completion=Math.round((totalQuestionsAnswered/TOTAL_QUESTIONS_REQUIRED)*100);
+  return String(accuracy).padStart(3,"0")+String(completion).padStart(3,"0");
+}
+function generateProgressCode(){
+  const timestamp=Date.now();const sixDigits=makeSixDigitScore();
+  const code="PROG"+timestamp.toString().slice(-6)+sixDigits;
+  document.getElementById("currentProgressCode").textContent=code;
+  const accuracyPct=stats.attempts?Math.round(totalQuestionsAnswered/stats.attempts*100):0;
+  const completionPct=Math.round(totalQuestionsAnswered/TOTAL_QUESTIONS_REQUIRED*100);
+  document.getElementById("progressSummary").innerHTML="<p><strong>Accuracy:</strong> "+accuracyPct+"% &nbsp; | &nbsp; <strong>Completion:</strong> "+completionPct+"%</p>";
+}
+function showCompletion(){
+  document.getElementById("questionBox").style.display="none";
+  document.getElementById("videoBox").classList.add("hidden");
+  document.getElementById("completionMessage").classList.remove("hidden");
+  const accuracyPct=stats.attempts?Math.round(totalQuestionsAnswered/stats.attempts*100):0;
+  document.getElementById("finalStats").innerHTML="<p><strong>Total attempts:</strong> "+stats.attempts+"</p><p><strong>Question types completed:</strong> "+totalQuestionsAnswered+"/"+TOTAL_QUESTIONS_REQUIRED+"</p><p><strong>Overall accuracy:</strong> "+accuracyPct+"%</p>";
+  updateStats();generateProgressCode();
+}
+function generateCompletionCode(){
+  const timestamp=Date.now();const sixDigits=makeSixDigitScore();
+  const code="COMPLETE"+timestamp.toString().slice(-6)+sixDigits;
+  const el=document.getElementById("completionCode");el.innerHTML="<h3>Completion Code:</h3><div class=\"code-display\">"+code+"</div><p>Copy this code into Canvas.</p>";el.classList.remove("hidden");
+}
+
+document.getElementById("remaining").textContent=TOTAL_QUESTIONS_REQUIRED;
+loadCurrentProblem();
+</script>
+</body>
+</html>
