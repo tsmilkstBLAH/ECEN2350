@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logic Gate Drag-and-Drop</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;padding:24px;color:#1a1a1a}
+.container{max-width:1400px;margin:auto;background:white;padding:24px;border-radius:10px}
+h1{text-align:center;margin-top:0}
+.table-wrap{overflow-x:auto}
+table.main{border-collapse:collapse;width:100%;min-width:1120px;text-align:center}
+.main th,.main td{border:1px solid #888;padding:7px;vertical-align:middle}
+.main th{background:#efefef}
+.row-label{text-align:left;min-width:155px}
+.slot{width:100%;min-height:95px;border:2px dashed #aaa;border-radius:6px;background:#fafafa;padding:5px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#bank{display:flex;flex-wrap:wrap;gap:10px;padding:12px;border:1px solid #bbb;border-radius:7px;background:#fafafa}
+.piece{min-width:125px;min-height:58px;border:1px solid #999;border-radius:6px;background:white;padding:8px;cursor:grab;font-size:1rem}
+.piece.selected{outline:3px solid #007bff}
+.piece svg{width:130px;height:64px;display:block;margin:auto}
+.truth{margin:auto;border-collapse:collapse;font-size:.85rem}
+.truth th,.truth td{padding:1px 6px;border:none}
+.controls{margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.action{border:0;border-radius:6px;padding:11px 20px;font-size:1rem;cursor:pointer}
+#check{background:#007bff;color:white}
+#reset{background:#ddd}
+#feedback{font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Logic Gate Drag-and-Drop</h1>
+<p>Drag each block into the correct location. You can also click a block and then click its destination.</p>
+
+<div class="table-wrap">
+<table class="main">
+<thead><tr><th></th><th>AND</th><th>NAND</th><th>OR</th><th>NOR</th><th>XOR</th><th>XNOR</th><th>NOT</th></tr></thead>
+<tbody id="grid"></tbody>
+</table>
+</div>
+
+<h3>Blocks</h3>
+<div id="bank"></div>
+
+<div class="controls">
+<button class="action" id="check" type="button">Submit Answer</button>
+<button class="action" id="reset" type="button">Reset</button>
+<span id="feedback"></span>
+</div>
+</div>
+
+<script>
+(() => {
+const gates=["AND","NAND","OR","NOR","XOR","XNOR","NOT"];
+const rows=[["symbol","Logic symbol"],["truth","Truth table"],["equation","Boolean equation"]];
+const grid=document.getElementById("grid"), bank=document.getElementById("bank");
+let selected=null, dragged=null;
+
+rows.forEach(([type,label])=>{
+  const tr=document.createElement("tr");
+  const th=document.createElement("th"); th.className="row-label"; th.textContent=label; tr.appendChild(th);
+  gates.forEach(g=>{
+    const td=document.createElement("td");
+    const s=document.createElement("button");
+    s.type="button"; s.className="slot"; s.dataset.slot=g+"-"+type; s.textContent="Drop here";
+    td.appendChild(s); tr.appendChild(td);
+  });
+  grid.appendChild(tr);
+});
+
+function gateSVG(g){
+  const bubble=["NAND","NOR","XNOR"].includes(g);
+  const inv=g==="NOT";
+  const xor=["XOR","XNOR"].includes(g);
+  const or=["OR","NOR","XOR","XNOR"].includes(g);
+
+  if(inv) return `<svg viewBox="0 0 150 70"><line x1="5" y1="35" x2="40" y2="35" stroke="currentColor" stroke-width="3"/><path d="M40 10 L100 35 L40 60 Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="106" cy="35" r="6" fill="none" stroke="currentColor" stroke-width="3"/><line x1="112" y1="35" x2="145" y2="35" stroke="currentColor" stroke-width="3"/></svg>`;
+
+  if(or) return `<svg viewBox="0 0 170 80"><line x1="5" y1="22" x2="48" y2="22" stroke="currentColor" stroke-width="3"/><line x1="5" y1="58" x2="48" y2="58" stroke="currentColor" stroke-width="3"/>${xor?'<path d="M39 10 Q58 40 39 70" fill="none" stroke="currentColor" stroke-width="3"/>':''}<path d="M47 10 Q85 10 125 40 Q85 70 47 70 Q66 40 47 10 Z" fill="none" stroke="currentColor" stroke-width="3"/>${bubble?'<circle cx="132" cy="40" r="6" fill="none" stroke="currentColor" stroke-width="3"/>':''}<line x1="${bubble?138:125}" y1="40" x2="165" y2="40" stroke="currentColor" stroke-width="3"/></svg>`;
+
+  return `<svg viewBox="0 0 170 80"><line x1="5" y1="22" x2="50" y2="22" stroke="currentColor" stroke-width="3"/><line x1="5" y1="58" x2="50" y2="58" stroke="currentColor" stroke-width="3"/><path d="M50 10 L90 10 A30 30 0 0 1 90 70 L50 70 Z" fill="none" stroke="currentColor" stroke-width="3"/>${bubble?'<circle cx="127" cy="40" r="6" fill="none" stroke="currentColor" stroke-width="3"/>':''}<line x1="${bubble?133:120}" y1="40" x2="165" y2="40" stroke="currentColor" stroke-width="3"/></svg>`;
+}
+
+function truthTable(g){
+  if(g==="NOT") return `<table class="truth"><tr><th>A</th><th>Y</th></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></table>`;
+  const vals={AND:"0001",NAND:"1110",OR:"0111",NOR:"1000",XOR:"0110",XNOR:"1001"}[g];
+  const c=[[0,0],[0,1],[1,0],[1,1]];
+  return `<table class="truth"><tr><th>A</th><th>B</th><th>Y</th></tr>${c.map((v,i)=>`<tr><td>${v[0]}</td><td>${v[1]}</td><td>${vals[i]}</td></tr>`).join("")}</table>`;
+}
+
+const eq={AND:"Y = A · B",NAND:"Y = ¬(A · B)",OR:"Y = A + B",NOR:"Y = ¬(A + B)",XOR:"Y = A ⊕ B",XNOR:"Y = ¬(A ⊕ B)",NOT:"Y = ¬A"};
+
+let defs=[];
+gates.forEach(g=>{defs.push([g,"symbol",gateSVG(g)]);defs.push([g,"truth",truthTable(g)]);defs.push([g,"equation",eq[g]])});
+for(let i=defs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[defs[i],defs[j]]=[defs[j],defs[i]]}
+
+function makePiece([g,type,html]){
+  const p=document.createElement("button");
+  p.type="button"; p.draggable=true; p.className="piece"; p.dataset.answer=g+"-"+type; p.innerHTML=html;
+  p.addEventListener("click",()=>{selected=p;document.querySelectorAll(".piece").forEach(x=>x.classList.remove("selected"));p.classList.add("selected")});
+  p.addEventListener("dragstart",()=>dragged=p);
+  p.addEventListener("dragend",()=>dragged=null);
+  return p;
+}
+defs.forEach(d=>bank.appendChild(makePiece(d)));
+
+function put(piece,slot){
+  const old=slot.querySelector(".piece");
+  if(old) bank.appendChild(old);
+  slot.textContent="";
+  slot.appendChild(piece);
+  piece.classList.remove("selected");
+  selected=null;
+}
+
+document.querySelectorAll(".slot").forEach(s=>{
+  s.addEventListener("click",()=>{if(selected)put(selected,s)});
+  s.addEventListener("dragover",e=>e.preventDefault());
+  s.addEventListener("drop",e=>{e.preventDefault();if(dragged)put(dragged,s)});
+});
+
+document.getElementById("check").addEventListener("click",()=>{
+  const slots=[...document.querySelectorAll(".slot")];
+  const fb=document.getElementById("feedback");
+  const filled=slots.filter(s=>s.querySelector(".piece")).length;
+  if(filled<21){fb.textContent=`Fill all spaces first (${filled}/21).`;return;}
+  const good=slots.every(s=>s.querySelector(".piece").dataset.answer===s.dataset.slot);
+  fb.textContent=good?"Correct! All seven gates match.":"Not quite. One or more blocks are in the wrong location.";
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  [...document.querySelectorAll(".piece")].forEach(p=>{p.classList.remove("selected");bank.appendChild(p)});
+  document.querySelectorAll(".slot").forEach(s=>s.textContent="Drop here");
+  document.getElementById("feedback").textContent="";
+  selected=null;
+});
+})();
+</script>
+</body>
+</html>
