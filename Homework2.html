@@ -206,11 +206,23 @@ const QUESTION_SEQUENCES = [
   },
   {
     conceptName:"3a. ASCII",
-    problems:[
-      textProblem("Tricky question: What is -7 in ASCII?",[textField("Answer",["X","invalid","not valid","not representable"])],vid(V4+"?startTime=1787899623000","eluZ4i4^")),
-      textProblem("Tricky question: What is -3 in ASCII?",[textField("Answer",["X","invalid","not valid","not representable"])],vid(V4+"?startTime=1787899747000","eluZ4i4^")),
-      textProblem("Tricky question: What is 13 in ASCII?",[textField("Answer",["CR","carriage return","0D","0x0D","13"])],vid(V4+"?startTime=1787899821000","eluZ4i4^"))
-    ]
+problems:[
+  textProblem(
+    "Tricky question: What is -7 in ASCII?",
+    [textField("Answer",["0x2D 0x37","2D 37","0x2d 0x37","2d 37"])],
+    vid(V4+"?startTime=1787899623000","eluZ4i4^")
+  ),
+  textProblem(
+    "Tricky question: What is -3 in ASCII?",
+    [textField("Answer",["0x2D 0x33","2D 33","0x2d 0x33","2d 33"])],
+    vid(V4+"?startTime=1787899747000","eluZ4i4^")
+  ),
+  textProblem(
+    "Tricky question: What is 13 in ASCII?",
+    [textField("Answer",["0x31 0x33","31 33","0x31 0x33"])],
+    vid(V4+"?startTime=1787899821000","eluZ4i4^")
+  )
+]
   },
   {
     conceptName:"3b. ASCII text",
