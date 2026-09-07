@@ -116,6 +116,10 @@ const V1="https://cuboulder.zoom.us/rec/share/pfJn8CilVtKY-MKS3mZadXAqa2TBeB6l8h
 const V2="https://cuboulder.zoom.us/rec/share/nfz7UZ08pTasfOmD7tAH1IWvhab-IpTdYNiTYo6ks8CuZGpA3J01kr2oz1k4JExJ.3DCAjJNmcVa4cQKX";
 const V3="https://cuboulder.zoom.us/rec/share/uA86NF9INWeJOFpn9ndinF-vbHgkvqmzCzTFhB7d7tQ1CeT1SO4BqlSeBC25a2L1.08niWYSaUDZ4JCWA";
 const V4="https://cuboulder.zoom.us/rec/share/uoDsW0YREVF4C6fjQuySW_is5v0NaWr79fE48kHupLJAVkH73SZYfBXhWCtbCpXe.nzQjGdSgCCAfMbum";
+  /* Floating pt videos */
+const V5="https://cuboulder.zoom.us/rec/share/XpzORHLLOtP-Hqs1qEJp5rAyC8Y9ur0zTQJIul7DY2ns0jehpPD1dBWDq1hmGmbg.Odgrg7f8xvCL29gz?startTime=1788755958000";
+const V6="https://cuboulder.zoom.us/rec/share/XpzORHLLOtP-Hqs1qEJp5rAyC8Y9ur0zTQJIul7DY2ns0jehpPD1dBWDq1hmGmbg.Odgrg7f8xvCL29gz?startTime=1788755196000";
+const V7="https://cuboulder.zoom.us/rec/share/XpzORHLLOtP-Hqs1qEJp5rAyC8Y9ur0zTQJIul7DY2ns0jehpPD1dBWDq1hmGmbg.Odgrg7f8xvCL29gz?startTime=1788755754000";
 
 const QUESTION_SEQUENCES = [
   {
@@ -232,12 +236,13 @@ problems:[
       textProblem("What does this say? 0x59 0x6F 0x75 0x20 0x67 0x6F 0x74 0x20 0x69 0x74 0x21",[textField("Text",["You got it!"])],vid(V4+"?startTime=1787900187000","eluZ4i4^"),"You got it!")
     ]
   },
+  /*1st (v5) Passcode: y#2+AU8i, 2nd (v6) Passcode: y#2+AU8i, 3rd (v7) Passcode: y#2+AU8i */
   {
     conceptName:"4. IEEE 754 half-precision floating point",
     problems:[
-      textProblem("Give the IEEE half-precision representation of -137.03125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10110"),textField("Significand (10-bits)","0001001000")],vid(V4+"?startTime=1787900504000","eluZ4i4^")),
-      textProblem("Give the IEEE half-precision representation of 24.0625.",[textField("S (1-bit)","0"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1000000100")],null,"S = 0, Exponent = 10011, Significand = 1000000100"),
-      textProblem("Give the IEEE half-precision representation of -25.3125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1001010100")],null,"S = 1, Exponent = 10011, Significand = 1001010100")
+      textProblem("Give the IEEE half-precision representation of -137.03125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10110"),textField("Significand (10-bits)","0001001000")],vid(V5,"y#2+AU8i")),
+      textProblem("Give the IEEE half-precision representation of 24.0625.",[textField("S (1-bit)","0"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1000000100")],vid(V6,"y#2+AU8i")),
+      textProblem("Give the IEEE half-precision representation of -25.3125.",[textField("S (1-bit)","1"),textField("Exponent (5-bits)","10011"),textField("Significand (10-bits)","1001010100")],vid(V7,"y#2+AU8i"))
     ]
   }
 ];
